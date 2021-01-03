@@ -4,6 +4,7 @@ import {
   shell,
   BrowserWindow,
   MenuItemConstructorOptions,
+  dialog,
 } from 'electron';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
@@ -97,6 +98,25 @@ export default class MenuBuilder {
           label: 'Select All',
           accelerator: 'Command+A',
           selector: 'selectAll:',
+        },
+        {
+          label: 'Change Location',
+          accelerator: 'Command+L',
+          click: () => {
+            dialog
+              .showOpenDialog({
+                buttonLabel: 'Select',
+                properties: ['openDirectory', 'createDirectory'],
+              })
+              .then((result) => {
+                console.log(result.canceled);
+                console.log(result.filePaths);
+                return true;
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          },
         },
       ],
     };
